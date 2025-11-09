@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 AP2 Transaction Executor - Makes requests to the running AP2 agents
-Using proper A2A message format
+Using proper A2A message format and CORRECT URLs
 """
 
 import requests
@@ -27,8 +27,9 @@ class AP2TransactionExecutor:
     """Execute AP2 shopping transactions against running agents"""
     
     def __init__(self):
+        # FIXED URLs - using correct endpoints
         self.merchant_url = "http://localhost:8001/a2a/merchant_agent"
-        self.credentials_url = "http://localhost:8002/a2a/credentials_provider_agent"
+        self.credentials_url = "http://localhost:8002/a2a/credentials_provider"  # FIXED!
         self.payment_processor_url = "http://localhost:8003/a2a/merchant_payment_processor_agent"
         self.context_id = uuid.uuid4().hex
     
@@ -124,10 +125,10 @@ class AP2TransactionExecutor:
             
             time.sleep(0.5)  # Simulate user browsing
             
-            # Step 2: Get payment methods
+            # Step 2: Search for payment methods
             response = self._send_message(
                 self.credentials_url,
-                "List my available payment methods"
+                "Search for available payment methods"
             )
             steps += 1
             
